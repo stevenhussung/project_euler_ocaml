@@ -5,32 +5,43 @@ Problem 45: Find the second number that is triangular, pentagonal, and hexagonal
 
 open Printf
 
-let bound = 30000
+let bound = 50000
 
-let tri n = n*(n+1)/2
-let pent n = n*(3*n-1)/2
-let hex n = n*(2*n-1)
+let tri n = n*(n+1)/2;;
+let pent n = n*(3*n-1)/2;;
+let hex n = n*(2*n-1);;
+
+print_endline "Generating lists.";;
 
 let tri_list  = List.init bound tri;;
 let pent_list = List.init bound pent;;
 let hex_list  = List.init bound hex;;
 
-let rec list_contains x list = 
+let greater_than bound x = bound < x;;
+
+let rec list_contains list x = 
         match list with 
-        | h :: t -> if h = x then true else list_contains x t 
+        | h :: t -> 
+                if h = x then true 
+                else if h > x then false
+                else list_contains t x
         | [] -> false;;
 
 let rec list_intersection list_a list_b = 
         match list_a with 
-        | h::t -> if list_contains h list_b 
-                then h :: list_intersection t list_b 
+        | h::t -> if list_contains list_b h
+                then h :: list_intersection t (list_b |> List.filter (greater_than h)) (* Can I add a filter to remove anything less than h here? or should I filter that earlier? (Should we do this with fewer function calls at first?) *)
                 else list_intersection t list_b 
         | [] -> [];;
 
+print_endline "Computing first intersection";;
 let tri_and_pent = list_intersection tri_list pent_list;;
+
+print_endline "Computing second intersection";;
 let tri_pent_and_hex = list_intersection tri_and_pent hex_list;;
 
 List.iter (printf "%d ") tri_pent_and_hex;;
+print_endline "";;
 
 (*Printouts for testing*)
 
