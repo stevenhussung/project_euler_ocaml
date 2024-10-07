@@ -48,6 +48,15 @@ let rec list_contains xs x =
                 else list_contains t x
         | [] -> false;;
 
+let rec ordered_intersection acc list_a list_b = 
+        match list_a with 
+        h :: t -> (match list_b with 
+                hb :: tb -> if h = hb 
+                        then ordered_intersection (h :: acc) t tb 
+                        else if h > hb then (* advance list_b*) ordered_intersection acc list_a tb 
+                        else (* h < hb *) (*advance list_a*) ordered_intersection acc t list_b 
+                | [] -> acc) 
+        | [] -> acc;;
 
 let rec list_intersection_tr acc list_a list_b = 
         (*let _ = print_endline "Acc =" in
@@ -64,7 +73,8 @@ let rec list_intersection_tr acc list_a list_b =
 let list_intersection list_a list_b = list_intersection_tr [] list_a list_b;;
 
 print_endline "Computing first intersection";;
-let tri_and_pent = list_intersection tri_list pent_list;;
+(*let tri_and_pent = list_intersection tri_list pent_list;;*)
+let tri_and_pent = ordered_intersection [] tri_list pent_list;;
 
 print_endline "Computing second intersection";;
 let tri_pent_and_hex = list_intersection tri_and_pent hex_list;;

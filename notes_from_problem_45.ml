@@ -22,3 +22,5 @@ print_endline (string_of_bool (is_tri 40755));;
 print_endline (string_of_bool (is_pent 40755));;
 print_endline (string_of_bool (is_hex 40755));;
 *)
+
+let rec ordered_intersection acc list_a list-b = match list_a with h :: t -> (match list_b with hb :: tb -> if h = hb then ordered_intersection (h :: acc) t tb else if h > hb then (* advance list_b*) ordered_intersection acc list_a tb else (* h < hb *) (*advance list_a*) ordered_intersection acc t list_b | [] -> acc) | [] -> acc;;
