@@ -1,7 +1,7 @@
 print_endline "Hello again, friend of a friend";;
 
 
-let bound = 100000;;
+let bound = 1000000;;
 
 let rec gen_primes_to_tr acc i bound =
 	if i = bound then acc
@@ -10,7 +10,9 @@ let rec gen_primes_to_tr acc i bound =
 	else	gen_primes_to_tr acc (i+1) bound
 ;;
 
-let gen_primes_to bound = gen_primes_to_tr [] 2 bound |> List.rev;;
+let sqrt_bound = bound |> float_of_int |> sqrt |> ceil |> int_of_float;;
+
+let gen_primes_to bound = gen_primes_to_tr [] 2 sqrt_bound |> List.rev;;
 
 let primes = gen_primes_to bound;;
 
