@@ -1,7 +1,7 @@
 print_endline "Hello again, friend of a friend";;
 
 
-let bound = 10000;;
+let bound = 100000;;
 
 let rec gen_primes_to_tr acc i bound =
 	if i = bound 
@@ -27,16 +27,22 @@ composites_div_counts |> List.iter (fun tu -> match tu with (n, divisors) ->
 *)
 
 
-let rec consecutive_with_n_divisors n tuple_list =
+let rec find_cons_full n cons_count current_first tuple_list =
         match tuple_list with
-        | h1 :: h2 :: t -> 
-                (match h1 with (c1, d1) ->
-                (match h2 with (c2, d2) ->
-                        if d1 = n && d2 = n
-                                then c1
-                                else consecutive_with_n_divisors n (h2 :: t)
-                ))
-        | h :: t -> 0
+        | h :: t -> 
+                (
+                        match h with (c, d) ->
+                        if d = n then
+                                if cons_count + 1 = n then current_first
+                                else if cons_count > 0 then find_cons_full n (cons_count + 1) current_first t
+                                else (* cons_count = 0 *) find_cons_full n (cons_count + 1) c t
+                        else find_cons_full n 0 0 t
+                )
         | [] -> 0;;
 
-composites_div_counts |> consecutive_with_n_divisors 2 |> string_of_int |> print_endline;;
+let find_cons n tuple_list = 
+        find_cons_full n 0 0 tuple_list;;
+
+composites_div_counts |> find_cons 2 |> string_of_int |> print_endline;;
+composites_div_counts |> find_cons 3 |> string_of_int |> print_endline;;
+composites_div_counts |> find_cons 4 |> string_of_int |> print_endline;;
