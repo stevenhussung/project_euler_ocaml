@@ -1,8 +1,8 @@
-test: problem_47.ml
-	ocaml problem_47.ml
+test: problem_48.ml
+	ocaml problem_48.ml
 
-a.out: problem_47.ml
-	ocamlc problem_47.ml
+a.out: problem_48.ml
+	ocamlc problem_48.ml
 
 run:
 	./a.out
