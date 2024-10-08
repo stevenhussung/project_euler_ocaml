@@ -4,8 +4,7 @@ print_endline "Hello again, friend of a friend";;
 let bound = 100000;;
 
 let rec gen_primes_to_tr acc i bound =
-	if i = bound 
-	then acc
+	if i = bound then acc
 	else if acc |> List.filter (fun x -> i mod x = 0) |> List.is_empty
 		then gen_primes_to_tr (i::acc) (i+1) bound
 	else	gen_primes_to_tr acc (i+1) bound
