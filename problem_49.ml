@@ -9,6 +9,8 @@ There are no arithmetic sequences made up of three 1-, 2-, or 3-digit primes, ex
 What 12-digit number do you form by concatenating the three terms in this sequence?
 *)
 
+
+(* - - - First, auxiliary functions for testing candidates - - - *)
 (* Need to be able to parse through a string. (unsure of how important duplicates are here) *)
 
 (* Lets mimic the Enum.frequencies function from Elixir *)
@@ -21,15 +23,54 @@ let rec list_of_int_tr acc n =
 
 let list_of_int n = list_of_int_tr [] n;;
 
-
-let rec count a list =
-        list |>
+let rec count a xs =
+        xs |>
         List.filter (fun x -> x = a) |>
         List.length
 ;;
 
-12343434 
-        |> list_of_int 
-        |> count 4
-        |> string_of_int
-        |> print_endline
+let frequencies xs = 
+        xs
+        |> List.map (fun a -> (a, count a xs))
+        |> List.sort_uniq (fun a b -> match a with (a1, a2) -> (match b with (b1, b2) -> a1 - b1))
+;;
+
+let all_true xs = xs |> List.fold_left (fun x y -> x && y) true;;
+
+let all_equal xs = xs |> List.map (fun x -> x = (List.hd xs)) |> all_true;;
+
+let is_list_of_palindrome_ints candidates =
+        candidates |> List.map list_of_int
+                |> List.map frequencies
+                |> all_equal 
+;;
+(* - - - Auxiliary functions are complete - - - *)
+(* - - - Testing - - - *)
+
+let candidates = [1487; 4817; 8147];;
+
+print_endline "Checking original candidates:";;
+candidates |> List.map (fun d -> Printf.printf "%d " d);;
+print_endline "";;
+
+print_string "Are these palindromes? " ;;
+candidates |> is_list_of_palindrome_ints |> string_of_bool |> print_endline;;
+        
+
+let candidates = [1487; 4817; 9147];;
+
+print_endline "Checking wrong candidates:";;
+candidates |> List.map (fun d -> Printf.printf "%d " d);;
+print_endline "";;
+
+print_string "Are these palindromes? " ;;
+candidates |> is_list_of_palindrome_ints |> string_of_bool |> print_endline;;
+
+(* - - - Testing complete! - - - *)
+
+
+
+
+
+
+
