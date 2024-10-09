@@ -69,8 +69,29 @@ candidates |> is_list_of_palindrome_ints |> string_of_bool |> print_endline;;
 (* - - - Testing complete! - - - *)
 
 
+(* Generate primes up to 10_000 (Copying from old code) *)
+let bound = 1000;;
 
+let rec gen_primes_to_tr acc i bound =
+	if i = bound 
+	then acc
+	else if acc |> List.filter (fun x -> i mod x = 0) |> List.is_empty
+		then gen_primes_to_tr (i::acc) (i+1) bound
+	else	gen_primes_to_tr acc (i+1) bound
+;;
 
+let gen_primes_to bound = gen_primes_to_tr [] 2 bound |> List.rev;;
 
+let primes = gen_primes_to bound;;
 
+let is_prime n = 
+        primes |> List.exists(fun x -> x = n);;
 
+(* Find arithmetic sequences *)
+
+let find_pairwise_distance a primes = 
+        let greater_primes = primes |> List.filter (fun p -> p > a) in
+        greater_primes |> List.map (fun p -> (a, p - a))
+;;
+
+(* Next: test the length of a single pairwise distance tuple (or don't tuplize the arguments--your code) *)
