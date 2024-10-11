@@ -84,11 +84,12 @@ let gen_primes_to bound = gen_primes_to_tr [] 2 bound |> List.rev;;
 
 let num_digits n = n |> string_of_int |> String.length;;
 
-let primes = gen_primes_to bound
-        |> List.filter (fun p -> num_digits p = 4)
+let all_primes = gen_primes_to bound;;
+let is_prime n = all_primes |> List.exists(fun x -> x = n);;
 
-let is_prime n = 
-        primes |> List.exists(fun x -> x = n);;
+let primes = gen_primes_to bound
+        |> List.filter (fun p -> num_digits p = 4);;
+
 
 (* Find arithmetic sequences *)
 
