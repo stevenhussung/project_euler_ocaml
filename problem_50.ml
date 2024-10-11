@@ -40,5 +40,6 @@ let is_prime n =
                 |> List.filter (fun x -> n mod x = 0) 
                 |> List.is_empty;;
 
-
-
+let is_listsum_prime l =
+        l |> List.fold_left (fun x y -> x + y) 0
+        |> is_prime;;
