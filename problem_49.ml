@@ -70,7 +70,7 @@ candidates |> is_list_of_palindrome_ints |> string_of_bool |> print_endline;;
 
 
 (* Generate primes up to 10_000 (Copying from old code) *)
-let bound = 1000;;
+let bound = 10_000;;
 
 let rec gen_primes_to_tr acc i bound =
 	if i = bound 
@@ -82,7 +82,10 @@ let rec gen_primes_to_tr acc i bound =
 
 let gen_primes_to bound = gen_primes_to_tr [] 2 bound |> List.rev;;
 
-let primes = gen_primes_to bound;;
+let num_digits n = n |> string_of_int |> String.length;;
+
+let primes = gen_primes_to bound
+        |> List.filter (fun p -> num_digits p = 4)
 
 let is_prime n = 
         primes |> List.exists(fun x -> x = n);;
@@ -95,3 +98,16 @@ let find_pairwise_distance a primes =
 ;;
 
 (* Next: test the length of a single pairwise distance tuple (or don't tuplize the arguments--your code) *)
+let pairwise = primes 
+        |> List.map(fun p -> find_pairwise_distance p primes) 
+        |> List.flatten;;
+
+let prime_sequence = pairwise
+        |> List.map (fun (p, offset) -> (p, p + offset, p + 2 * offset))
+        |> List.filter (fun (p1, p2, p3) -> num_digits p1 = 4 && num_digits p2 = 4 && num_digits p3 = 4)
+        |> List.filter (fun (p1, p2, p3) -> [p1; p2; p3] |> is_list_of_palindrome_ints)
+        |> List.filter (fun (p1, p2, p3) -> is_prime p1 && is_prime p2 && is_prime p3)
+;;
+
+prime_sequence 
+        |> List.map (fun (p1, p2, p3) -> Printf.printf "%d, %d, %d\n" p1 p2 p3);;
