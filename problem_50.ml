@@ -43,3 +43,14 @@ let is_prime n =
 let is_listsum_prime l =
         l |> List.fold_left (fun x y -> x + y) 0
         |> is_prime;;
+
+let rec takewhiletotal_tr acc func l = 
+        match l with
+        h :: t -> if func (h::acc) then takewhiletotal_tr (h :: acc) func t
+                else acc
+        | [] -> acc;;
+
+let takewhiletotal func l = takewhiletotal_tr [] func l |> List.rev;;
+
+
+(* Next step is tricky. Need to get all viable sublists of the main list. Not easy! *)
